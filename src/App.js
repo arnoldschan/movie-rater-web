@@ -5,7 +5,6 @@ import MovieDetail from './components/MovieDetail'
 import MovieForm from './components/MovieForm'
 
 function App() {
-  
   const [movies, setMovies] = useState(['Movie 1','Movie 2']);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [ editedMovie, setEditedMovie ] = useState(null);
@@ -14,7 +13,7 @@ function App() {
     setSelectedMovie(movie);
   }
   useEffect(()=> {
-    fetch("http://djangoproject--arnoldschan.repl.co/api/movies/", {
+    fetch("http://127.0.0.1:8000/api/movies/", {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -27,10 +26,22 @@ function App() {
   }, [])
   const movieClicked = movie => {
     setSelectedMovie(movie);
+    setEditedMovie(null)
   }
 
   const editClicked = movie => {
+    setSelectedMovie(null);
     setEditedMovie(movie)
+  }
+
+  const updateMovie = movie => {
+    const updatedMovies = movies.map( mov => {
+      if (mov.id === movie.id) {
+        return movie;
+      }
+      return mov;
+    })
+    setMovies(updatedMovies);
   }
   return (
     <div className="App">
@@ -39,7 +50,7 @@ function App() {
         <div className="layout">
           <MovieList movies={movies} movieClicked={movieClicked} editClicked={editClicked}/>
           <MovieDetail movie={selectedMovie} updateMovie={loadMovie}/>
-          <MovieForm movie={editedMovie}/>
+          { editedMovie ? <MovieForm movie={editedMovie} updateMovie={updateMovie}/> : null}
         </div>
       </header>
     </div>
