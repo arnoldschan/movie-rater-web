@@ -51,13 +51,24 @@ function App() {
     const  newMovies = [...movies, movie];
     setMovies(newMovies)
   }
+  const removeClicked = (movie) => {
+    const updatedMovies = movies.filter( mov => {
+      if (mov.id === movie.id){
+        return false;
+      }
+      return true;
+    })
+    setMovies(updatedMovies);;
+  }
   return (
     <div className="App">
       <header className="App-header">
         <h1>Movie Rater</h1>
         <div className="layout">
           <div>
-            <MovieList movies={movies} movieClicked={movieClicked} editClicked={editClicked}/>
+            <MovieList movies={movies} movieClicked={movieClicked} 
+            editClicked={editClicked}
+            removeClicked={removeClicked}/>
             <button onClick={newMovie}>New Movie</button>
           </div>
             <MovieDetail movie={selectedMovie} updateMovie={loadMovie}/>

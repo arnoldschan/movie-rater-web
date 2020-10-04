@@ -47,4 +47,14 @@ export class API {
                 .then( resp => resp.json())
                 .catch( error => console.log(error))
         }
+
+    static deleteMovie(mov_id) {
+        return fetch(`${BASE_URL}/api/movies/${mov_id}/`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${TOKEN}`,
+                }})
+                .catch( error => console.log(error))
+        }
 }
