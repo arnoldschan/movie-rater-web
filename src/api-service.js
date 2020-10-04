@@ -11,4 +11,15 @@ export class API {
             body: JSON.stringify( body )
         })
     }
+
+    static createMovie(body){
+        return fetch(`${BASE_URL}/api/movies/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${TOKEN}`,
+        },
+            body: JSON.stringify( body )
+        })
+    }
 }

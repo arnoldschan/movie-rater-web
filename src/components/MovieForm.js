@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { API } from '../api-service'
 function MovieForm(props) {
     const [ title, setTitle ] = useState(props.movie.title);
@@ -10,6 +10,19 @@ function MovieForm(props) {
         .then( resp => props.updateMovie(resp))
         .catch( error => console.log(error))
     }
+
+    const createClick = () => {
+        API.createMovie( {title, description} )
+        .then( resp => resp.json())
+        .then( resp => props.createMovie(resp))
+        .catch( error => console.log(error))
+    }
+
+    useEffect( () => {
+        setTitle(props.movie.title);
+        setDescription(props.movie.description);
+    }, [props.movie])
+
     return (props.movie ? 
         <div className="movie-form">
         <label>Title</label> <br/>
@@ -20,7 +33,12 @@ function MovieForm(props) {
         <textarea id ="description" type="text" placeholder={description}
             onChange={ e=> setDescription(e.target.value)}
             value={description}/> <br/>
-            <button onClick={ updateClick }>Update</button>
+            {
+                props.movie.id ? 
+                <button onClick={ updateClick }>Update</button>
+                :
+                <button onClick={ createClick }>Create</button>
+            }
         </div>
         : null
     )
