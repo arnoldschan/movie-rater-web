@@ -1,40 +1,17 @@
 import React, {useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
-
+import { API } from '../api-service'
 
 function MovieDetail(props) {
     const mov = props.movie;
 
     const [ highlighted, setHighlighted ] = useState(-1)
-    
+    const updateRate = (mov_id, rate) => {
+        API.updateRating(mov_id, rate).then( resp => props.updateMovie(resp))
+    }
     const highlightRate = high => evt => {
         setHighlighted(high);
-    }
-    const rateClicked = rate => evt => {
-        fetch(`http://djangoproject--arnoldschan.repl.co/api/movies/${mov.id}/rate_movie/`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Token 12f17f8d7daa4f40a6155138e9894bfecccb1598',
-        },
-            body: JSON.stringify( {stars: rate + 1} )
-        })
-        .then( resp => resp.json())
-        .then( resp => getDetails())
-        .catch( error => console.log(error))
-        }
-    
-    const getDetails = () => {
-        fetch(`http://djangoproject--arnoldschan.repl.co/api/movies/${mov.id}/`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Token 12f17f8d7daa4f40a6155138e9894bfecccb1598',
-            }})
-            .then( resp => resp.json())
-            .then( resp => props.updateMovie(resp))
-            .catch( error => console.log(error))
     }
     return (
         <React.Fragment>
@@ -54,8 +31,8 @@ function MovieDetail(props) {
                             return (
                                 <FontAwesomeIcon key={i} icon={faStar} className={highlighted > i -1 > 0 ? "purple": ''}
                                     onMouseEnter={highlightRate(i)}
-                                    onMouseLeave={highlightRate(1)}
-                                    onClick={rateClicked(i)}
+                                    onMouseLeave={highlightRate(0)}
+                                    onClick={() => updateRate( mov.id, i)}
                                 />
                             )
                         })

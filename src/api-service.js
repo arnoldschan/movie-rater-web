@@ -22,4 +22,29 @@ export class API {
             body: JSON.stringify( body )
         })
     }
+
+    static updateRating(mov_id, rate) {
+        return fetch(`${BASE_URL}/api/movies/${mov_id}/rate_movie/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Token ${TOKEN}`,
+        },
+            body: JSON.stringify( {stars: rate + 1} )
+        })
+        .then( resp => resp.json())
+        .then( resp => this.getDetails(mov_id))
+        .catch( error => console.log(error))
+        }
+
+    static getDetails(mov_id) {
+        return fetch(`${BASE_URL}/api/movies/${mov_id}/`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Token ${TOKEN}`,
+                }})
+                .then( resp => resp.json())
+                .catch( error => console.log(error))
+        }
 }
