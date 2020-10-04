@@ -2,12 +2,17 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 import MovieList from './components/MovieList'
 import MovieDetail from './components/MovieDetail'
+import MovieForm from './components/MovieForm'
 
 function App() {
   
   const [movies, setMovies] = useState(['Movie 1','Movie 2']);
   const [selectedMovie, setSelectedMovie] = useState(null);
+  const [ editedMovie, setEditedMovie ] = useState(null);
 
+  const loadMovie = movie => {
+    setSelectedMovie(movie);
+  }
   useEffect(()=> {
     fetch("http://djangoproject--arnoldschan.repl.co/api/movies/", {
       method: 'GET',
@@ -23,14 +28,18 @@ function App() {
   const movieClicked = movie => {
     setSelectedMovie(movie);
   }
+
+  const editClicked = movie => {
+    setEditedMovie(movie)
+  }
   return (
     <div className="App">
       <header className="App-header">
         <h1>Movie Rater</h1>
         <div className="layout">
-          <MovieList movies={movies} movieClicked={movieClicked}/>
-          <MovieDetail movie={selectedMovie}/>
-          <div>Movie details</div>
+          <MovieList movies={movies} movieClicked={movieClicked} editClicked={editClicked}/>
+          <MovieDetail movie={selectedMovie} updateMovie={loadMovie}/>
+          <MovieForm movie={editedMovie}/>
         </div>
       </header>
     </div>
