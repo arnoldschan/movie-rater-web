@@ -14,7 +14,15 @@ export class API {
             body: JSON.stringify( body )
         }).then ( resp => resp.json())
     }
-
+    static registerUser(body){
+        return fetch(`${BASE_URL}/api/users/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+                body: JSON.stringify( body )
+            }).then ( resp => resp.json())
+    }
     updateMovie(mov_id, body){
         return fetch(`${BASE_URL}/api/movies/${mov_id}/`, {
         method: 'PUT',

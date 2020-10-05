@@ -6,12 +6,17 @@ function Auth() {
     const [ username, setUsername ] = useState("");
     const [ password, setPassword ] = useState("")
     const [ token, setToken ] = useCookies(['mr-token']);
+    const [ isLoginView, setIsLoginView] = useState(true)
     const loginClick = () => {
         API.loginUser({ username, password})
         .then(resp => setToken('mr-token', resp.token))
         .catch( error => console.log(error))
     }
-
+    const registerClick = () => {
+        API.registerUser({ username, password})
+        .then(() => loginClick())
+        .catch( error => console.log(error))
+    }
     useEffect(() => {
         if (token["mr-token"]) window.location.href = '/movies';
         console.log(token)
@@ -26,7 +31,17 @@ function Auth() {
             <input id ="password" type="password" placeholder="password"
                 onChange={ e=> setPassword(e.target.value)}
                 value={password}/> <br/>
-            <button onClick={ loginClick }>Login</button>
+            { isLoginView ?
+                <>
+                    <button onClick={ loginClick }>Login</button>
+                    <p>Don't have an account? <b onClick={() => setIsLoginView(false)}> Register Here! </b></p>
+                </>
+                :
+                <>
+                    <button onClick={ registerClick }>Register</button>
+                    <p>Already have an account? <b onClick={() => setIsLoginView(true)}> Login Here! </b></p>
+                </>
+            }
         </div>
     )
 }
