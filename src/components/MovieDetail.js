@@ -2,13 +2,14 @@ import React, {useState} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 import { API } from '../api-service'
+import { useCookies } from "react-cookie";
 
 function MovieDetail(props) {
     const mov = props.movie;
-
+    const [ token ] = useCookies(['mr-token']);
     const [ highlighted, setHighlighted ] = useState(-1)
     const updateRate = (mov_id, rate) => {
-        API.updateRating(mov_id, rate).then( resp => props.updateMovie(resp))
+        new API(token['mr-token']).updateRating(mov_id, rate).then( resp => props.updateMovie(resp))
     }
     const highlightRate = high => evt => {
         setHighlighted(high);
