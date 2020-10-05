@@ -3,12 +3,13 @@ import './App.css';
 import MovieList from './components/MovieList'
 import MovieDetail from './components/MovieDetail'
 import MovieForm from './components/MovieForm'
+import { useCookies } from "react-cookie";
 
 function App() {
   const [movies, setMovies] = useState(['Movie 1','Movie 2']);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [ editedMovie, setEditedMovie ] = useState(null);
-
+  const [ token ] = useCookies(['mr-token']);
   const loadMovie = movie => {
     setSelectedMovie(movie);
   }
@@ -24,6 +25,13 @@ function App() {
     .then( resp => setMovies(resp))
     .catch( error => console.log(error))
   }, [])
+
+  useEffect(() => {
+    if (!token["mr-token"]) window.location.href = '/';
+    console.log(token)
+}, [token])
+
+
   const movieClicked = movie => {
     setSelectedMovie(movie);
     setEditedMovie(null)
