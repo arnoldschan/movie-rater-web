@@ -23,6 +23,18 @@ export class API {
                 body: JSON.stringify( body )
             }).then ( resp => resp.json())
     }
+
+    getMovies(){
+        return fetch(`${BASE_URL}/api/movies/`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Token ${this.token}`,
+            }
+            })
+            .then( resp => resp.json())
+            .catch( error => console.log(error))
+    }
     updateMovie(mov_id, body){
         return fetch(`${BASE_URL}/api/movies/${mov_id}/`, {
         method: 'PUT',

@@ -14,14 +14,7 @@ function App() {
     setSelectedMovie(movie);
   }
   useEffect(()=> {
-    fetch("http://127.0.0.1:8000/api/movies/", {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Token 12f17f8d7daa4f40a6155138e9894bfecccb1598',
-      }
-    })
-    .then( resp => resp.json())
+    new API(token["mr-token"]).getMovies()
     .then( resp => setMovies(resp))
     .catch( error => console.log(error))
   }, [])
