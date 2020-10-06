@@ -26,6 +26,7 @@ function MovieForm(props) {
         setDescription(props.movie.description);
     }, [props.movie])
 
+    const isDisabled = title.length === 0 || description.length === 0;
     return (props.movie ? 
         <div className="movie-form">
         <label>Title</label> <br/>
@@ -38,9 +39,9 @@ function MovieForm(props) {
             value={description}/> <br/>
             {
                 props.movie.id ? 
-                <button onClick={ updateClick }>Update</button>
+                <button onClick={ updateClick } disabled={isDisabled}>Update</button>
                 :
-                <button onClick={ createClick }>Create</button>
+                <button onClick={ createClick } disabled={isDisabled}>Create</button>
             }
         </div>
         : null

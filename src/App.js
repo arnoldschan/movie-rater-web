@@ -4,6 +4,9 @@ import MovieList from './components/MovieList'
 import MovieDetail from './components/MovieDetail'
 import MovieForm from './components/MovieForm'
 import { useCookies } from "react-cookie";
+import { API } from './api-service';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFilm } from '@fortawesome/free-solid-svg-icons'
 
 function App() {
   const [movies, setMovies] = useState(['Movie 1','Movie 2']);
@@ -63,8 +66,10 @@ function App() {
   }
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>Movie Rater</h1>
+        <header className="App-header">
+          
+          <h1> <FontAwesomeIcon icon={faFilm}/> <span>Movie Rater</span></h1>
+        </header>
         <div className="layout">
           <div>
             <MovieList movies={movies} movieClicked={movieClicked} 
@@ -77,7 +82,6 @@ function App() {
             updateMovie={updateMovie}
             createMovie={createMovie}/> : null}
         </div>
-      </header>
     </div>
   );
 }
