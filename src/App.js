@@ -7,25 +7,26 @@ import { useCookies } from "react-cookie";
 import { API } from './api-service';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilm } from '@fortawesome/free-solid-svg-icons'
+import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 function App() {
   const [movies, setMovies] = useState(['Movie 1','Movie 2']);
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [ editedMovie, setEditedMovie ] = useState(null);
-  const [ token ] = useCookies(['mr-token']);
+  const [ token, setToken, removeToken ] = useCookies(['mr-token']);
   const loadMovie = movie => {
     setSelectedMovie(movie);
   }
+  useEffect(() => {
+    if (!token["mr-token"]) window.location.href = '/';
+    console.log(token)
+}, [token])
   useEffect(()=> {
     new API(token["mr-token"]).getMovies()
     .then( resp => setMovies(resp))
     .catch( error => console.log(error))
   }, [])
 
-  useEffect(() => {
-    if (!token["mr-token"]) window.location.href = '/';
-    console.log(token)
-}, [token])
 
 
   const movieClicked = movie => {
@@ -69,6 +70,7 @@ function App() {
         <header className="App-header">
           
           <h1> <FontAwesomeIcon icon={faFilm}/> <span>Movie Rater</span></h1>
+          <FontAwesomeIcon icon={faSignOutAlt} onClick={() => removeToken(['mr-token'])}/>
         </header>
         <div className="layout">
           <div>
